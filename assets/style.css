@@ -1,0 +1,26 @@
+header {
+    background-image: linear-gradient(to bottom right, rgb(1, 1, 100),rgb(41, 100, 248)) ;
+    color: white;
+    text-align: center;
+}
+
+#search-box {
+    border: 2px solid black;
+}
+
+#current-city {
+     border: 2px solid black;
+}
+
+#five-day-forecast {
+     border: 2px solid black;
+}
+
+#forecast-box-container {
+    display: flex;
+    justify-content: space-around;
+}
+.forecast-box {
+     border: 2px solid black;
+     margin: 5px;
+}

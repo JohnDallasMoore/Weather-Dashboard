@@ -9,12 +9,18 @@ var currentCityHumid = document.querySelector("#current-city-humidity");
 var fiveDayForecast = document.querySelector("#five-day-forecast");
 var forecastBoxContainer = document.querySelector("#forecast-box-container");
 
+
+loadPreviousSearchButtons();
+
 // search button on-click functionality
 searchButton.addEventListener("click", function () {
     var searchedCity = searchInput.value.trim();
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
+    handleSearch();
+
 });
+
 // keypress event for hitting enter rather than clicking button
 searchInput.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
@@ -22,11 +28,12 @@ searchInput.addEventListener("keypress", function (e) {
     var searchedCity = searchInput.value.trim();
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
+    handleSearch();
   }
 });
 
 // dynamically create previously searched buttons add and remove from local storage
-function newPreviousSearchedButton() {
+function newPreviousSearchedButton(searchedCity) {
   var searchedCity = searchInput.value.trim();
   var previousSearchButton = document.createElement("button");
   previousSearchButton.classList.add("w-100", "btn", "btn-outline-primary");
@@ -34,50 +41,37 @@ function newPreviousSearchedButton() {
   previousSearched.appendChild(previousSearchButton);
   previousSearchButton.addEventListener("click", function () {
     searchWeather(this.textContent);
-  
-    var previousCities = localStorage.getItem('previousCities');
-    if (previousCities) {
-        previousCities = JSON.parse(previousCities);
-    } else {
-        previousCities = []
-    }
-    previousCities.push(searchedCity);
-    localStorage.setItem('previousCities', JSON.stringify(previousCities));
-    
-});
-
+  });
 }
-    //Local storage attempt
-    // var previousCities = JSON.parse(localStorage.getItem('previousCities'));
-    // if(!Array.isArray(previousCities)){
-    //     previousCities = [];
 
-    // } else{
-    //     previousCities.push(searchedCity)
-    // }
+// Local storage function
+function handleSearch(){
+  var searchedCity = searchInput.value.trim();
+  var previousCities = localStorage.getItem('previousCities');
+  if (previousCities) {
+      previousCities = JSON.parse(previousCities);
+  } else {
+      previousCities = []
+  }
+  previousCities.push(searchedCity);
+  localStorage.setItem('previousCities', JSON.stringify(previousCities));
+}
 
-    // localStorage.setItem("previousCities", JSON.stringify(previousCities))
-    // var indexStop;
-    // if(previousCities.length >= 5){
-    //     indexStop = previousCities.length - 6
-
-    // } else {
-    //     indexStop = 0
-    // }
-    // for (var i = previousCities.length -1; i > indexStop; i--) {
-        
-        
-
-    // }
+//Load previous search button
 
 
+function loadPreviousSearchButtons(){
+  var previousCities = localStorage.getItem('previousCities');
+  if (previousCities){
+    previousCities = JSON.parse(previousCities);
+    previousSearched.innerHTML = '';
+    previousCities.forEach(function (city){
+      newPreviousSearchedButton(city);
+    });
+  }
+}
 
-//On-click event to pull up previously searched city
-// var previousSearchButton = document.createElement("button");
 
-// pull from input city in API to current city container
-
-// pull from input city's 5-day forecast in API to 5-day forecast container
 
 // fetch api
 function searchWeather(city) {
@@ -98,6 +92,7 @@ function searchWeather(city) {
       processWeatherData(response);
     });
 
+    //Current city data 
   function processWeatherData(response) {
     var cityName = response.city.name;
     var cityIcon = response.list[0].weather[0].icon;
@@ -112,7 +107,7 @@ function searchWeather(city) {
     currentCityWind.textContent = Math.round(cityWind) + " MPH";
     currentCityHumid.textContent = cityHumid + "%";
 
-    // for loop to 5 day forecast index
+    // for loop with template literal for  5 day forecast 
     var forecastBoxes = "";
     for (let i = 7; i <= 39; i += 8) {
       var newDate = new Date(response.list[i].dt*1000).toLocaleDateString("en-US");

@@ -8,12 +8,17 @@ header {
     border: 2px solid black;
 }
 
-#current-city {
+#current-city-container {
      border: 2px solid black;
+     text-align: center;
 }
 
 #five-day-forecast {
-     border: 2px solid black;
+     /* border: 2px solid black; */
+}
+#five-day-forecast h3 {
+    text-align: center;
+    padding: 10px 0;
 }
 
 #forecast-box-container {
@@ -23,4 +28,8 @@ header {
 .forecast-box {
      border: 2px solid black;
      margin: 5px;
+}
+
+#previous-searched button {
+    margin: 5px 0;
 }

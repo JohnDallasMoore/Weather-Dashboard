@@ -18,7 +18,7 @@ searchButton.addEventListener("click", function () {
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
     handleSearch();
-
+    searchInput.value = ''
 });
 
 // keypress event for hitting enter rather than clicking button
@@ -29,6 +29,7 @@ searchInput.addEventListener("keypress", function (e) {
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
     handleSearch();
+    searchInput.value = ''
   }
 });
 

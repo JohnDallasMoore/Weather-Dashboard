@@ -9,16 +9,15 @@ var currentCityHumid = document.querySelector("#current-city-humidity");
 var fiveDayForecast = document.querySelector("#five-day-forecast");
 var forecastBoxContainer = document.querySelector("#forecast-box-container");
 
-
 loadPreviousSearchButtons();
 
 // search button on-click functionality
 searchButton.addEventListener("click", function () {
-    var searchedCity = searchInput.value.trim();
-    searchWeather(searchedCity);
-    newPreviousSearchedButton(searchedCity);
-    handleSearch();
-    searchInput.value = ''
+  var searchedCity = searchInput.value.trim();
+  searchWeather(searchedCity);
+  newPreviousSearchedButton(searchedCity);
+  handleSearch();
+  searchInput.value = "";
 });
 
 // keypress event for hitting enter rather than clicking button
@@ -29,13 +28,12 @@ searchInput.addEventListener("keypress", function (e) {
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
     handleSearch();
-    searchInput.value = ''
+    searchInput.value = "";
   }
 });
 
 // dynamically create previously searched buttons add and remove from local storage
 function newPreviousSearchedButton(searchedCity) {
-  var searchedCity = searchInput.value.trim();
   var previousSearchButton = document.createElement("button");
   previousSearchButton.classList.add("w-100", "btn", "btn-outline-primary");
   previousSearchButton.textContent = searchedCity;
@@ -46,37 +44,32 @@ function newPreviousSearchedButton(searchedCity) {
 }
 
 // Local storage function
-function handleSearch(){
+function handleSearch() {
   var searchedCity = searchInput.value.trim();
-  var previousCities = localStorage.getItem('previousCities');
+  var previousCities = localStorage.getItem("previousCities");
   if (previousCities) {
-      previousCities = JSON.parse(previousCities);
+    previousCities = JSON.parse(previousCities);
   } else {
-      previousCities = []
+    previousCities = [];
   }
   previousCities.push(searchedCity);
-  localStorage.setItem('previousCities', JSON.stringify(previousCities));
+  localStorage.setItem("previousCities", JSON.stringify(previousCities));
 }
 
 //Load previous search button
-
-
-function loadPreviousSearchButtons(){
-  var previousCities = localStorage.getItem('previousCities');
-  if (previousCities){
+function loadPreviousSearchButtons() {
+  var previousCities = localStorage.getItem("previousCities");
+  if (previousCities) {
     previousCities = JSON.parse(previousCities);
-    previousSearched.innerHTML = '';
-    previousCities.forEach(function (city){
-      newPreviousSearchedButton(city);
-    });
+    previousSearched.innerHTML = "";
+    for (let i = 0; i < previousCities.length; i++) {
+      newPreviousSearchedButton(previousCities[i]);
+    }
   }
 }
 
-
-
 // fetch api
 function searchWeather(city) {
-  
   var apiKey = "1f729b3e3654c16d2b6560bf21b678ad";
   var apiUrl =
     "https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" +
@@ -93,7 +86,7 @@ function searchWeather(city) {
       processWeatherData(response);
     });
 
-    //Current city data 
+  //Current city data
   function processWeatherData(response) {
     var cityName = response.city.name;
     var cityIcon = response.list[0].weather[0].icon;
@@ -108,10 +101,12 @@ function searchWeather(city) {
     currentCityWind.textContent = Math.round(cityWind) + " MPH";
     currentCityHumid.textContent = cityHumid + "%";
 
-    // for loop with template literal for  5 day forecast 
+    // for loop with template literal for  5 day forecast
     var forecastBoxes = "";
     for (let i = 7; i <= 39; i += 8) {
-      var newDate = new Date(response.list[i].dt*1000).toLocaleDateString("en-US");
+      var newDate = new Date(response.list[i].dt * 1000).toLocaleDateString(
+        "en-US"
+      );
       forecastBoxes += `<div class="forecast-box">
             <h5>${newDate}</h5>
             <img src="http://openweathermap.org/img/w/${

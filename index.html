@@ -18,9 +18,9 @@
       <h1>Weather Dashboard</h1>
     </header>
     <main>
-      <div class="container">
+      <div id="search-box-container" class="container">
         <div class="row">
-          <section id="search-box" class="col-4">
+          <section id="search-box" class="col-12">
             <h2>Search for a City:</h2>
             <div class="input-group">
               <input
@@ -31,7 +31,7 @@
                 aria-label="Search"
                 aria-describedby="search-addon"
               />
-              <button type="button" id="search-button" class="btn btn-outline-primary">
+              <button type="button" id="search-button" class="btn btn-outline-dark">
                 search
               </button>
             </div>
@@ -41,7 +41,7 @@
             </div>
           </section>
 
-          <section id="searched-city" class="col-8">
+          <section id="searched-city-container" class="col-8">
             <div id="current-city-container">
               <h2 id="current-city">Current City</h2>
               <img src="" id="current-city-icon">

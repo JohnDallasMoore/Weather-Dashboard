@@ -8,16 +8,24 @@ var currentCityWind = document.querySelector("#current-city-wind");
 var currentCityHumid = document.querySelector("#current-city-humidity");
 var fiveDayForecast = document.querySelector("#five-day-forecast");
 var forecastBoxContainer = document.querySelector("#forecast-box-container");
+var searchedCityContainer = document.querySelector("#searched-city-container");
+var searchBox = document.querySelector("#search-box");
 
 loadPreviousSearchButtons();
+
+searchedCityContainer.style.display = 'none';
+
 
 // search button on-click functionality
 searchButton.addEventListener("click", function () {
   var searchedCity = searchInput.value.trim();
+  if (searchedCity == '') return;
   searchWeather(searchedCity);
   newPreviousSearchedButton(searchedCity);
   handleSearch();
   searchInput.value = "";
+  searchBox.classList.replace('col-12', 'col-4')
+  searchedCityContainer.style.display = '';
 });
 
 // keypress event for hitting enter rather than clicking button
@@ -25,17 +33,20 @@ searchInput.addEventListener("keypress", function (e) {
   if (e.key === "Enter") {
     e.preventDefault();
     var searchedCity = searchInput.value.trim();
+    if (searchedCity == '') return;
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
     handleSearch();
     searchInput.value = "";
+    searchBox.classList.replace('col-12', 'col-4')
+    searchedCityContainer.style.display = '';
   }
 });
 
 // dynamically create previously searched buttons add and remove from local storage
 function newPreviousSearchedButton(searchedCity) {
   var previousSearchButton = document.createElement("button");
-  previousSearchButton.classList.add("w-100", "btn", "btn-outline-primary");
+  previousSearchButton.classList.add("w-100", "btn", "btn-outline-dark");
   previousSearchButton.textContent = searchedCity;
   previousSearched.appendChild(previousSearchButton);
   previousSearchButton.addEventListener("click", function () {
@@ -65,6 +76,7 @@ function loadPreviousSearchButtons() {
     for (let i = 0; i < previousCities.length; i++) {
       newPreviousSearchedButton(previousCities[i]);
     }
+    
   }
 }
 
@@ -82,7 +94,6 @@ function searchWeather(city) {
       return response.json();
     })
     .then(function (response) {
-      console.log(response);
       processWeatherData(response);
     });
 
@@ -94,7 +105,6 @@ function searchWeather(city) {
     var cityTemp = response.list[0].main.temp;
     var cityWind = response.list[0].wind.speed;
     var cityHumid = response.list[0].main.humidity;
-    console.log(response);
     currentCity.textContent = cityName;
     currentCityIcon.setAttribute("src", iconUrl);
     currentCityTemp.textContent = Math.round(cityTemp) + "°F";

@@ -22,7 +22,7 @@ searchButton.addEventListener("click", function () {
   if (searchedCity == '') return;
   searchWeather(searchedCity);
   newPreviousSearchedButton(searchedCity);
-  handleSearch();
+  handleSearch(searchedCity);
   searchInput.value = "";
   searchBox.classList.replace('col-12', 'col-4')
   searchedCityContainer.style.display = '';
@@ -36,7 +36,7 @@ searchInput.addEventListener("keypress", function (e) {
     if (searchedCity == '') return;
     searchWeather(searchedCity);
     newPreviousSearchedButton(searchedCity);
-    handleSearch();
+    handleSearch(searchedCity);
     searchInput.value = "";
     searchBox.classList.replace('col-12', 'col-4')
     searchedCityContainer.style.display = '';
@@ -49,23 +49,30 @@ function newPreviousSearchedButton(searchedCity) {
   previousSearchButton.classList.add("w-100", "btn", "btn-outline-dark");
   previousSearchButton.textContent = searchedCity;
   previousSearched.appendChild(previousSearchButton);
-  previousSearchButton.addEventListener("click", function () {
-    searchWeather(this.textContent);
+  previousSearchButton.addEventListener("click", function (e) {
+    var searchValue = e.target.textContent;
+    handleHistorySearch(searchValue);
   });
 }
 
+function handleHistorySearch(searchValue) {
+  searchWeather(searchValue)
+
+}
+
 // Local storage function
-function handleSearch() {
-  var searchedCity = searchInput.value.trim();
+function handleSearch(searchValue) {
   var previousCities = localStorage.getItem("previousCities");
   if (previousCities) {
     previousCities = JSON.parse(previousCities);
   } else {
     previousCities = [];
   }
-  previousCities.push(searchedCity);
+  previousCities.push(searchValue);
   localStorage.setItem("previousCities", JSON.stringify(previousCities));
 }
+
+
 
 //Load previous search button
 function loadPreviousSearchButtons() {
@@ -75,6 +82,7 @@ function loadPreviousSearchButtons() {
     previousSearched.innerHTML = "";
     for (let i = 0; i < previousCities.length; i++) {
       newPreviousSearchedButton(previousCities[i]);
+      
     }
     
   }

@@ -24,7 +24,8 @@ searchButton.addEventListener("click", function () {
   newPreviousSearchedButton(searchedCity);
   handleSearch(searchedCity);
   searchInput.value = "";
-  searchBox.classList.replace('col-12', 'col-4')
+  searchBox.classList.remove('col-12')
+  searchBox.classList.add('col-4')
   searchedCityContainer.style.display = '';
 });
 
@@ -38,7 +39,8 @@ searchInput.addEventListener("keypress", function (e) {
     newPreviousSearchedButton(searchedCity);
     handleSearch(searchedCity);
     searchInput.value = "";
-    searchBox.classList.replace('col-12', 'col-4')
+    searchBox.classList.remove('col-12')
+    searchBox.classList.add('col-4')
     searchedCityContainer.style.display = '';
   }
 });
@@ -50,6 +52,7 @@ function newPreviousSearchedButton(searchedCity) {
   previousSearchButton.textContent = searchedCity;
   previousSearched.appendChild(previousSearchButton);
   previousSearchButton.addEventListener("click", function (e) {
+    console.log(e.target.textContent);
     var searchValue = e.target.textContent;
     handleHistorySearch(searchValue);
   });
@@ -57,7 +60,9 @@ function newPreviousSearchedButton(searchedCity) {
 
 function handleHistorySearch(searchValue) {
   searchWeather(searchValue)
-
+  searchBox.classList.remove('col-12')
+  searchBox.classList.add('col-4')
+  searchedCityContainer.style.display = '';
 }
 
 // Local storage function
@@ -102,6 +107,7 @@ function searchWeather(city) {
       return response.json();
     })
     .then(function (response) {
+      console.log(response);
       processWeatherData(response);
     });
 
@@ -125,7 +131,7 @@ function searchWeather(city) {
       var newDate = new Date(response.list[i].dt * 1000).toLocaleDateString(
         "en-US"
       );
-      forecastBoxes += `<div class="forecast-box">
+      forecastBoxes += `<div class="forecast-box col-3 col-lg-2 col-md-4 col-sm-3">
             <h5>${newDate}</h5>
             <img src="http://openweathermap.org/img/w/${
               response.list[i].weather[0].icon
